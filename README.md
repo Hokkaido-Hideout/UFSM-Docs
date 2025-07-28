@@ -1,13 +1,7 @@
-
 # UFSM - Unreal Finite State Machine Plugin
 
-A **Blueprintable Finite State Machine Component** for Unreal Engine 4/5 created by **Bruno Xavier B. Leite**. It offers robust and extensible FSM logic that integrates seamlessly into Blueprints, Behavior Trees, Animation Blueprints, and Multiplayer networking systems.
-
----
-
-## 🧠 Overview
-
-This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine. FSMs are essential for managing character AI, animation transitions, UI logic, and more.
+This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine.
+FSMs are essential for managing character AI, animation transitions, UI logic, and more.
 
 ---
 
@@ -204,6 +198,129 @@ FSM states support `==` and `!=` comparisons based on their `Name` and `Owner`.
 
 ---
 
-## 🔗 Resources
+## 🛠️ Setup Instructions
 
-- **Official Blog**: [UE4/5 Finite State Machines](https://brunoxavierleite.com/2016/07/03/ue4-finite-state-machine/)
+### Adding the FSM Component
+
+1. Open your project (must be C++ enabled).
+2. Navigate to your Actor/Character Blueprint.
+3. Click **Add Component → Custom → Finite State Machine**.
+4. Set the component’s **Auto Activate** flag to ensure it ticks properly in-game.
+
+---
+
+## 🌀 Blueprint Integration
+
+When added, the FSM component automatically exposes Blueprint **event hooks**:
+
+* **OnBeginState** – called once when a state activates
+* **OnUpdateState** – called every tick while a state is active
+* **OnExitState** – called once when a state finishes or transitions
+
+Each event supplies the **State ID**, **State Name**, and optionally the **elapsed Time** since activation. These are especially useful for timing logic, delayed transitions, and modular behavior.
+
+With **Blueprint Auto‑Flow FSM** enabled (default in recent versions), you don’t need explicit calls—events fire automatically based on your defined states.
+
+---
+
+## 🎬 Animation Blueprint Sync
+
+For Skeletal Characters, you can link your FSM component to an **Animation Blueprint’s State Machine**:
+
+* Use **Anim Blueprint** parent class *StateMachineABP*.
+* In **Class Defaults**, choose:
+
+  * **Target FSM** (your FSM Component name)
+  * **Target ASM** (name of the Anim State Machine)
+  * Enable **Override FSM**
+
+This setup ensures that FSM states **auto-duplicate** your Animation State’s transitions and broadcast CLR changes to your Actor. A great way to keep animation and logic in sync.
+
+---
+
+## 🤖 Behavior Tree Control
+
+Built-in **Behavior Tree Task Nodes** let you manipulate FSM states through AI logic:
+
+* **Add State**
+* **Set State**
+* **Check State**
+* **Remove State**
+
+Using these, your AI Controller can dictate FSM transitions based on behavior decisions, external signals, or animation states. Multiple trees can even control different FSM subsets simultaneously.
+
+---
+
+## 🧠 Native C++ Usage
+
+From C++, you can fully customize and bind logic to FSM:
+
+```cpp
+StateMachine->SetState(FName("Jump"));
+StateMachine->SetState((uint8)EStates::Idle);
+```
+
+You can subscribe to state events dynamically or bind callback functions to state transitions. After version 1.3+, call `SetActive(true, false)` in your constructor to activate the FSM.
+
+All FSM properties—including **Active State ID**, **Timing**, and **State List**—are replicated by default in multiplayer games.
+
+---
+
+## 🌟 Usage Example: Input & Movement FSM
+
+1. Create a Blueprint FSM asset (e.g., **FSM\_Input**) via *Content Browser → Synaptech → FSM Component*.
+2. Attach it to your Character Blueprint and mark **Auto Activate**.
+3. Define states like `Normal`, `Jump`, `DoubleJump`, `Ladder`.
+4. In each state’s event graph:
+
+   * **OnBegin\_Normal**: enable input
+   * **OnBegin\_Jump**: call Jump function, check if double jump
+5. In Character Blueprint, forward input (axis and action) to the FSM component.
+6. Ladder state logic: When inside a trigger, switch to Ladder state. Change movement mode, controls, and exit back to Normal on leave.
+
+This yields clean, modular movement logic: **Walk/Run**, **Jump**, **Double Jump**, **Ladder climbing** — all handled via FSM transitions, with near-zero blueprint spaghetti.
+
+---
+
+## 📦 Full API & Integration Summary
+
+* **State Management**: Add / Remove / Set / Finish states at runtime via Blueprint or C++
+* **Event Hooks**: OnBegin, OnUpdate, OnExit for each state
+* **AutoFlow** enables direct state callback execution
+* **Enum support**: Use UEnum to map human-readable IDs and names
+* **Tick timing**: Use elapsed state time to trigger delayed logic
+* **Replication**: Full multiplayer sync of state machine properties
+* **Animation/BehaviorTree sync**: Maintain consistency across logic and visuals
+* **C++ integration**: Bind runtime delegates, manipulate FSM in native code
+
+---
+
+## 💡 Tips & Best Practices
+
+* Use **Blueprint Enumerators** for intuitive state IDs.
+* For modular input handling, isolate input logic inside an FSM component (as the blog example does).
+* FSM greatly simplifies branching logic—avoid tangled if/else chains.
+* Animation Blueprint sync helps unify visual states with gameplay logic.
+* Use **Behavior Tree tasks** for AI-driven state transitions.
+* Always set **Auto Activate** for FSM components used for ticked logic.
+
+---
+
+## 🧰 Included Samples
+
+* FSM Input sample asset demonstrating movement logic (walk, jump, ladder).
+* Animation Blueprint with FSM sync example.
+* Behavior Tree demonstrating AI-driven transitions.
+* Sample C++ classes showing native binding and FSM manipulation.
+
+---
+
+## ⚡ Wrap-Up
+
+UFSM brings **structured state-driven logic** into Unreal Engine—and with the enhancements above, it's not just cleaner—it’s scalable, network-ready, animation-integrated, and AI-compatible. Use cases range from character control to gameplay state orchestration, AI management, UI flow, animations, and multiplayer systems.
+
+User Quote:
+
+> “With a little imagination, this little tool provides unlimited possibilities! … If you’re used to work with State Machines… you’ll quickly adapt… you can really encapsulate all code logic into Finite State rules.”
+
+---
