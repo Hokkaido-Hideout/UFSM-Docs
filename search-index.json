@@ -1,0 +1,77 @@
+[
+  {
+    "id": "overview",
+    "title": "🧠 Overview",
+    "body": "This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine. FSMs are essential for managing character AI, animation transitions, UI logic, and more."
+  },
+  {
+    "id": "main-component-ustatemachinecomponent",
+    "title": "📦 Main Component: UStateMachineComponent",
+    "body": "Purpose An ActorComponent that holds a finite state machine with named states and defined transitions. It's network-ready and fully integrated with Blueprint logic."
+  },
+  {
+    "id": "key-features",
+    "title": "⚙️ Key Features",
+    "body": "Add/remove states at runtime. Custom state transitions with callbacks. State change conditions. Native and Blueprint Enum support. Built-in state timing and tracking. Editor integration with FSM Graphs (Editor-only). Network replication: Server, Client, Multicast support. Delegate broadcasting and Blueprint events. Auto transition execution and function call mapping."
+  },
+  {
+    "id": "core-types",
+    "title": "📚 Core Types",
+    "body": "FSM_State Represents a single FSM state. FName Name;\nUStateMachineComponent* Owner;\nFSM_BeginState OnBeginState;\nFSM_UpdateState OnUpdateState;\nFSM_ExitState OnExitState; FSM_Link Represents a link (transition) between two states. FName NextState;\nFName Function; // Optional callback function on transition."
+  },
+  {
+    "id": "blueprint-api",
+    "title": "🎮 Blueprint API",
+    "body": "State Management MakeStates(NewStates, Transition) AddState(ID, Name, Transition) RemoveState(Name, Transition) SetState(Name, Transition) SetStateID(ID, Transition) SetStateValue(Value, Transition) Conditional Set SetState_Conditional(...) SetStateID_Conditional(...) SetStateValue_Conditional(...) State Completion FinishState(Transition) FinishState_Conditional(...) With callbacks: FinishStateWithCallbacks(...)"
+  },
+  {
+    "id": "callbacks-and-delegates",
+    "title": "🔁 Callbacks and Delegates",
+    "body": "Dynamic Delegates FSM_BPD_Initialize\nFSM_BPD_BeginState\nFSM_BPD_UpdateState\nFSM_BPD_ExitState Self-Implementable Blueprint Events Event_OnConstruct() Event_OnBeginState(...) Event_OnUpdateState(...) Event_OnExitState(...)"
+  },
+  {
+    "id": "networking",
+    "title": "🔌 Networking",
+    "body": "Every FSM action has a counterpart for: Server: SERVER_SetState(...) Client: CLIENT_SetState(...) Multicast: MULTI_SetState(...) Use these to synchronize state transitions in multiplayer scenarios."
+  },
+  {
+    "id": "advanced-configuration",
+    "title": "⚙️ Advanced Configuration",
+    "body": "Startup State UPROPERTY(EditDefaultsOnly)\nFName StartupState; Enum Support bool UseEnumFromCPP;\nFString CPP_EnumName;\nUEnum* K2_Enumerator; Debugging and Performance bool Debug;\nbool AlwaysTickFSM;\nbool BlueprintAutoFlowFSM;\nbool BlueprintAutoFlowTransitions;"
+  },
+  {
+    "id": "pure-blueprint-functions",
+    "title": "🧪 Pure Blueprint Functions",
+    "body": "Use these when you need no transition callbacks: Pure_AddState(ID, Name) Pure_SetState(Name) Pure_SetStateByID(ID) Pure_RemoveState(Name)"
+  },
+  {
+    "id": "state-information-accessors",
+    "title": "🧩 State Information Accessors",
+    "body": "float GetTime();\nFName GetCurrentStateName();\nuint8 GetCurrentStateID();\nuint8 GetPreviousStateID();\nFName GetPreviousStateName();\nFSM_State& GetActiveState();\nbool IsInitializedFSM();"
+  },
+  {
+    "id": "transition-rule-handling",
+    "title": "🔄 Transition Rule Handling",
+    "body": "Use links and the FinishState() function to move between states automatically. TMap<FName, FSM_Link> LINKS; Transitions can call a function specified in FSM_Link.Function when triggered."
+  },
+  {
+    "id": "editor-integration",
+    "title": "🧰 Editor Integration",
+    "body": "When running in the Unreal Editor, custom graph nodes ( UFSMGraph , UFSMGraphNode ) provide visual editing capabilities."
+  },
+  {
+    "id": "utility",
+    "title": "🧼 Utility",
+    "body": "Equality Operators FSM states support == and != comparisons based on their Name and Owner ."
+  },
+  {
+    "id": "integration-tips",
+    "title": "🧩 Integration Tips",
+    "body": "Blueprints : Drop the component onto any Actor , define states, use SetState() or FinishState() nodes. AI Logic : Combine with BTTasks ( UBTTask_FSM_SetState , etc.) for AI FSMs. Animation : Sync FSM states with Animation BP transitions. Enums : Link FSM states to UEnum assets for scalability. Multiplayer : Use SERVER_ / CLIENT_ functions to replicate state transitions."
+  },
+  {
+    "id": "resources",
+    "title": "🔗 Resources",
+    "body": "Official Blog : UE4/5 Finite State Machines"
+  }
+]
