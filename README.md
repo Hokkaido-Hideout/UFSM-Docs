@@ -1,6 +1,6 @@
 # UFSM - Unreal Finite State Machine Plugin
 
-This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine.
+This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine.  
 FSMs are essential for managing character AI, animation transitions, UI logic, and more.
 
 ---
@@ -8,7 +8,8 @@ FSMs are essential for managing character AI, animation transitions, UI logic, a
 ## 📦 Main Component: `UStateMachineComponent`
 
 ### Purpose
-An `ActorComponent` that holds a finite state machine with named states and defined transitions. It's network-ready and fully integrated with Blueprint logic.
+An `ActorComponent` that holds a finite state machine with named states and defined transitions.  
+It's network-ready and fully integrated with Blueprint logic.
 
 ---
 
@@ -23,6 +24,31 @@ An `ActorComponent` that holds a finite state machine with named states and defi
 - Network replication: Server, Client, Multicast support.
 - Delegate broadcasting and Blueprint events.
 - Auto transition execution and function call mapping.
+
+---
+
+## 🛠️ Setup Instructions
+
+### Adding the FSM Component
+
+1. Open your project.
+2. Navigate to your Actor/Character Blueprint.
+3. Click **Add Component → Custom → Finite State Machine**.
+4. Set the component’s **Auto Activate** flag to ensure it ticks properly in-game.
+
+---
+
+## 🌀 Blueprint Integration
+
+When added, the FSM component automatically exposes Blueprint **event hooks**:
+
+* **OnBeginState** – called once when a state activates
+* **OnUpdateState** – called every tick while a state is active
+* **OnExitState** – called once when a state finishes or transitions
+
+Each event supplies the **State ID**, **State Name**, and optionally the **elapsed Time** since activation. These are especially useful for timing logic, delayed transitions, and modular behavior.
+
+With **Blueprint Auto‑Flow FSM** enabled (default in recent versions), you don’t need explicit calls—events fire automatically based on your defined states.
 
 ---
 
@@ -195,31 +221,6 @@ FSM states support `==` and `!=` comparisons based on their `Name` and `Owner`.
 4. **Enums**: Link FSM states to `UEnum` assets for scalability.
 5. **Multiplayer**: Use `SERVER_`/`CLIENT_` functions to replicate state transitions.
 
-
----
-
-## 🛠️ Setup Instructions
-
-### Adding the FSM Component
-
-1. Open your project (must be C++ enabled).
-2. Navigate to your Actor/Character Blueprint.
-3. Click **Add Component → Custom → Finite State Machine**.
-4. Set the component’s **Auto Activate** flag to ensure it ticks properly in-game.
-
----
-
-## 🌀 Blueprint Integration
-
-When added, the FSM component automatically exposes Blueprint **event hooks**:
-
-* **OnBeginState** – called once when a state activates
-* **OnUpdateState** – called every tick while a state is active
-* **OnExitState** – called once when a state finishes or transitions
-
-Each event supplies the **State ID**, **State Name**, and optionally the **elapsed Time** since activation. These are especially useful for timing logic, delayed transitions, and modular behavior.
-
-With **Blueprint Auto‑Flow FSM** enabled (default in recent versions), you don’t need explicit calls—events fire automatically based on your defined states.
 
 ---
 
