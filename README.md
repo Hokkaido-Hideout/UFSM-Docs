@@ -5,9 +5,26 @@ FSMs are essential for managing character AI, animation transitions, UI logic, a
 
 ---
 
-<h1>🟦 Quick Tutorial</h1>
+# [🎬 >> QUICK TUTORIAL](https://www.youtube.com/embed/a_8MT3wm_MI)
 
-{% include youtube.html id="a_8MT3wm_MI" title="HKH FSM Tutorial" %}
+# [📼 >> DOWNLOAD PROJECT HERE!](https://www.dropbox.com/scl/fi/3fmbgisrpak8lza2ls2l1/HKH_FSM_Demo_UE5.6.zip?rlkey=hcqfi99i4w9o2ukt8y3fts3uy&st=zqpuh34f&dl=0)
+
+---
+
+## 🌟 Usage Example: Input & Movement FSM
+
+1. Create a Blueprint FSM asset (e.g., **FSM\_Input**) via *Content Browser → Synaptech → FSM Component*.
+2. Attach it to your Character Blueprint and mark **Auto Activate**.
+3. Define states like `Normal`, `Jump`, `DoubleJump`, `Ladder`.
+4. In each state’s event graph:
+
+   * **OnBegin\_Normal**: enable input
+   * **OnBegin\_Jump**: call Jump function, check if double jump
+
+5. In Character Blueprint, forward input (axis and action) to the FSM component.
+6. Ladder state logic: When inside a trigger, switch to Ladder state. Change movement mode, controls, and exit back to Normal on leave.
+
+This yields clean, modular movement logic: **Walk/Run**, **Jump**, **Double Jump**, **Ladder climbing** — all handled via FSM transitions, with near-zero blueprint spaghetti.
 
 ---
 
@@ -270,22 +287,6 @@ StateMachine->SetState((uint8)EStates::Idle);
 You can subscribe to state events dynamically or bind callback functions to state transitions. After version 1.3+, call `SetActive(true, false)` in your constructor to activate the FSM.
 
 All FSM properties—including **Active State ID**, **Timing**, and **State List**—are replicated by default in multiplayer games.
-
----
-
-## 🌟 Usage Example: Input & Movement FSM
-
-1. Create a Blueprint FSM asset (e.g., **FSM\_Input**) via *Content Browser → Synaptech → FSM Component*.
-2. Attach it to your Character Blueprint and mark **Auto Activate**.
-3. Define states like `Normal`, `Jump`, `DoubleJump`, `Ladder`.
-4. In each state’s event graph:
-
-   * **OnBegin\_Normal**: enable input
-   * **OnBegin\_Jump**: call Jump function, check if double jump
-5. In Character Blueprint, forward input (axis and action) to the FSM component.
-6. Ladder state logic: When inside a trigger, switch to Ladder state. Change movement mode, controls, and exit back to Normal on leave.
-
-This yields clean, modular movement logic: **Walk/Run**, **Jump**, **Double Jump**, **Ladder climbing** — all handled via FSM transitions, with near-zero blueprint spaghetti.
 
 ---
 
