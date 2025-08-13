@@ -5,6 +5,12 @@ FSMs are essential for managing character AI, animation transitions, UI logic, a
 
 ---
 
+<h1>🟦 Quick Tutorial</h1>
+
+{% include youtube.html id="a_8MT3wm_MI" title="HKH FSM Tutorial" %}
+
+---
+
 ## 📦 Main Component: `UStateMachineComponent`
 
 ### Purpose
