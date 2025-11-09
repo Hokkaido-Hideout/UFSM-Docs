@@ -1,14 +1,40 @@
 # UFSM - Unreal Finite State Machine Plugin
 
-This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine.
+This plugin allows game developers to construct and manipulate finite state machines (FSMs) directly within Unreal Engine.  
 FSMs are essential for managing character AI, animation transitions, UI logic, and more.
+
+---
+
+# [🎬 >> QUICK TUTORIAL](https://www.youtube.com/embed/a_8MT3wm_MI)
+
+# [📼 >> DOWNLOAD PROJECT HERE!](https://www.dropbox.com/scl/fi/3fmbgisrpak8lza2ls2l1/HKH_FSM_Demo_UE5.6.zip?rlkey=hcqfi99i4w9o2ukt8y3fts3uy&st=zqpuh34f&dl=0)  
+
+<br>
+
+---
+
+## 🌟 Usage Example: Input & Movement FSM
+
+1. Create a Blueprint FSM asset (e.g., **FSM\_Input**) via *Content Browser → Synaptech → FSM Component*.
+2. Attach it to your Character Blueprint and mark **Auto Activate**.
+3. Define states like `Normal`, `Jump`, `DoubleJump`, `Ladder`.
+4. In each state’s event graph:
+
+   * **OnBegin\_Normal**: enable input
+   * **OnBegin\_Jump**: call Jump function, check if double jump
+
+5. In Character Blueprint, forward input (axis and action) to the FSM component.
+6. Ladder state logic: When inside a trigger, switch to Ladder state. Change movement mode, controls, and exit back to Normal on leave.
+
+This yields clean, modular movement logic: **Walk/Run**, **Jump**, **Double Jump**, **Ladder climbing** — all handled via FSM transitions, with near-zero blueprint spaghetti.
 
 ---
 
 ## 📦 Main Component: `UStateMachineComponent`
 
 ### Purpose
-An `ActorComponent` that holds a finite state machine with named states and defined transitions. It's network-ready and fully integrated with Blueprint logic.
+An `ActorComponent` that holds a finite state machine with named states and defined transitions.  
+It's network-ready and fully integrated with Blueprint logic.
 
 ---
 
@@ -23,6 +49,31 @@ An `ActorComponent` that holds a finite state machine with named states and defi
 - Network replication: Server, Client, Multicast support.
 - Delegate broadcasting and Blueprint events.
 - Auto transition execution and function call mapping.
+
+---
+
+## 🛠️ Setup Instructions
+
+### Adding the FSM Component
+
+1. Open your project.
+2. Navigate to your Actor/Character Blueprint.
+3. Click **Add Component → Custom → Finite State Machine**.
+4. Set the component’s **Auto Activate** flag to ensure it ticks properly in-game.
+
+---
+
+## 🌀 Blueprint Integration
+
+When added, the FSM component automatically exposes Blueprint **event hooks**:
+
+* **OnBeginState** – called once when a state activates
+* **OnUpdateState** – called every tick while a state is active
+* **OnExitState** – called once when a state finishes or transitions
+
+Each event supplies the **State ID**, **State Name**, and optionally the **elapsed Time** since activation. These are especially useful for timing logic, delayed transitions, and modular behavior.
+
+With **Blueprint Auto‑Flow FSM** enabled (default in recent versions), you don’t need explicit calls—events fire automatically based on your defined states.
 
 ---
 
@@ -198,31 +249,6 @@ FSM states support `==` and `!=` comparisons based on their `Name` and `Owner`.
 
 ---
 
-## 🛠️ Setup Instructions
-
-### Adding the FSM Component
-
-1. Open your project (must be C++ enabled).
-2. Navigate to your Actor/Character Blueprint.
-3. Click **Add Component → Custom → Finite State Machine**.
-4. Set the component’s **Auto Activate** flag to ensure it ticks properly in-game.
-
----
-
-## 🌀 Blueprint Integration
-
-When added, the FSM component automatically exposes Blueprint **event hooks**:
-
-* **OnBeginState** – called once when a state activates
-* **OnUpdateState** – called every tick while a state is active
-* **OnExitState** – called once when a state finishes or transitions
-
-Each event supplies the **State ID**, **State Name**, and optionally the **elapsed Time** since activation. These are especially useful for timing logic, delayed transitions, and modular behavior.
-
-With **Blueprint Auto‑Flow FSM** enabled (default in recent versions), you don’t need explicit calls—events fire automatically based on your defined states.
-
----
-
 ## 🎬 Animation Blueprint Sync
 
 For Skeletal Characters, you can link your FSM component to an **Animation Blueprint’s State Machine**:
@@ -263,22 +289,6 @@ StateMachine->SetState((uint8)EStates::Idle);
 You can subscribe to state events dynamically or bind callback functions to state transitions. After version 1.3+, call `SetActive(true, false)` in your constructor to activate the FSM.
 
 All FSM properties—including **Active State ID**, **Timing**, and **State List**—are replicated by default in multiplayer games.
-
----
-
-## 🌟 Usage Example: Input & Movement FSM
-
-1. Create a Blueprint FSM asset (e.g., **FSM\_Input**) via *Content Browser → Synaptech → FSM Component*.
-2. Attach it to your Character Blueprint and mark **Auto Activate**.
-3. Define states like `Normal`, `Jump`, `DoubleJump`, `Ladder`.
-4. In each state’s event graph:
-
-   * **OnBegin\_Normal**: enable input
-   * **OnBegin\_Jump**: call Jump function, check if double jump
-5. In Character Blueprint, forward input (axis and action) to the FSM component.
-6. Ladder state logic: When inside a trigger, switch to Ladder state. Change movement mode, controls, and exit back to Normal on leave.
-
-This yields clean, modular movement logic: **Walk/Run**, **Jump**, **Double Jump**, **Ladder climbing** — all handled via FSM transitions, with near-zero blueprint spaghetti.
 
 ---
 
